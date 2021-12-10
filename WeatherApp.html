@@ -47,23 +47,29 @@
       }
       .current > * {
         border: springgreen 1px solid;
+        /* margin: 0 auto; */
       }
 
-      .weekly {
+      .current-weather-emoji {
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .daily {
         display: flex;
         border: rosybrown solid 1px;
         padding: 1.2em;
         justify-content: space-between;
-        text-align: center;
       }
 
-      .weekly > * {
+      .daily > * {
         border: rgb(255, 145, 0) 1px solid;
         flex-grow: 1;
         margin-top: 0em;
         /* padding: 1.2em; */
       }
-      .weekly > * > * {
+      .daily > * > * {
         border: palevioletred 1px solid;
         /* margin-top: 1.2em; */
       }
@@ -88,7 +94,7 @@
         <div class="current-weather-description">sunny</div>
         <img src="" class="current-weather-emoji" />
       </div>
-      <div class="weekly">
+      <div class="daily">
         <div class="day1">
           <div class="day-name1">Mon</div>
           <div class="temp-range1">60 / 76</div>
@@ -134,6 +140,14 @@
       const currentWeatherEmoji = document.querySelector(
         ".current-weather-emoji"
       );
+      const day1 = document.querySelector(".day1");
+      const day2 = document.querySelector(".day2");
+      const day3 = document.querySelector(".day3");
+      const day4 = document.querySelector(".day4");
+      const day5 = document.querySelector(".day5");
+      const dailyWeather = document.querySelector(".daily");
+
+      let array = [{}];
 
       async function getHourlyData(lat, lon) {
         const response = await fetch(
@@ -141,6 +155,43 @@
         );
         const result = await response.json().then((data) => {
           console.log(data);
+          let fiveDayWeather = [
+            {
+              min: data.daily[0].temp.min,
+              max: data.daily[0].temp.max,
+              icon: data.daily[0].weather[0].icon,
+            },
+            {
+              min: data.daily[1].temp.min,
+              max: data.daily[1].temp.max,
+              icon: data.daily[1].weather[0].icon,
+            },
+            {
+              min: data.daily[2].temp.min,
+              max: data.daily[2].temp.max,
+              icon: data.daily[2].weather[0].icon,
+            },
+            {
+              min: data.daily[3].temp.min,
+              max: data.daily[3].temp.max,
+              icon: data.daily[3].weather[0].icon,
+            },
+            {
+              min: data.daily[4].temp.min,
+              max: data.daily[4].temp.max,
+              icon: data.daily[4].weather[0].icon,
+            },
+          ];
+
+          for (i = 0; i < array.length; i++) {
+            let newElement = document.createElement("div");
+            newElement.textContent = `${fiveDayWeather[i].min} / ${fiveDayWeather[i].max}`;
+            let newImage = document.createElement("img");
+            newImage.src = `http://openweathermap.org/img/w/${fiveDayWeather[i].icon}.png`;
+            dailyWeather.append(newElement);
+            newElement.append(newImage);
+          }
+
           console.log("second data set");
           // let currentTempRaw = data.main.temp;
           // currentTemp.innerHTML = `${currentTempRaw.toFixed(0)}°C`;
@@ -161,6 +212,8 @@
             currentTemp.innerHTML = `${currentTempRaw.toFixed(0)}°C`;
             currentWeatherDescription.innerHTML = data.weather[0].description;
             currentWeatherEmoji.src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+            currentWeatherEmoji.style.width = "50px";
+            currentWeatherEmoji.style.height = "50px";
             getHourlyData(data.coord.lat, data.coord.lon);
           });
         }
