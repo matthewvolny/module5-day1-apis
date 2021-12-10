@@ -24,6 +24,14 @@
         margin-top: 1.2em;
       }
 
+      body {
+        background-image: url(./weatherAppBackgroundDay.jpg);
+        background-size: contain;
+        background-color: #cccccc;
+      }
+      .container {
+      }
+
       .search {
         display: flex;
         flex-direction: column;
@@ -44,6 +52,7 @@
         text-align: center;
         border: rosybrown solid 1px;
         padding: 1.2em;
+        font-size: 2rem;
       }
       .current > * {
         border: springgreen 1px solid;
@@ -61,6 +70,7 @@
         border: rosybrown solid 1px;
         padding: 1.2em;
         justify-content: space-between;
+        text-align: center;
       }
 
       .daily > * {
@@ -73,56 +83,52 @@
         border: palevioletred 1px solid;
         /* margin-top: 1.2em; */
       }
-
-      .high-temp,
-      .low-temp {
-        display: inline;
-      }
     </style>
   </head>
   <body>
-    <header>
-      <nav class="search">
-        <div>Enter city</div>
-        <input type="text" class="input" />
-        <button>Search</button>
-      </nav>
-    </header>
-    <main>
-      <div class="current">
-        <div class="current-temp">76°C</div>
-        <div class="current-weather-description">sunny</div>
-        <img src="" class="current-weather-emoji" />
-      </div>
-      <div class="daily">
-        <div class="day1">
-          <div class="day-name1">Mon</div>
-          <div class="temp-range1">60 / 76</div>
-          <img src="" class="weather-emoji1" />
+    <div class="container">
+      <header>
+        <nav class="search">
+          <div>Enter city</div>
+          <input type="text" class="input" />
+          <button>Search</button>
+        </nav>
+      </header>
+      <main>
+        <div class="current">
+          <div class="current-temp">76°C</div>
+          <div class="current-weather-description">sunny</div>
+          <img src="" class="current-weather-emoji" />
         </div>
-        <div class="day2">
-          <div class="day-name2">Mon</div>
-          <div class="temp-range2">60 / 76</div>
-          <img src="" class="weather-emoji2" />
+        <div class="daily">
+          <div class="day1">
+            <div class="day-name1">Mon</div>
+            <div class="temp-range1">60 / 76</div>
+            <img src="" class="weather-emoji1" />
+          </div>
+          <div class="day2">
+            <div class="day-name2">Mon</div>
+            <div class="temp-range2">60 / 76</div>
+            <img src="" class="weather-emoji2" />
+          </div>
+          <div class="day3">
+            <div class="day-name3">Mon</div>
+            <div class="temp-range3">60 / 76</div>
+            <img src="" class="weather-emoji3" />
+          </div>
+          <div class="day4">
+            <div class="day-name4">Mon</div>
+            <div class="temp-range4">60 / 76</div>
+            <img src="" class="weather-emoji4" />
+          </div>
+          <div class="day5">
+            <div class="day-name5">Mon</div>
+            <div class="temp-range5">60 / 76</div>
+            <img src="" class="weather-emoji5" />
+          </div>
         </div>
-        <div class="day3">
-          <div class="day-name3">Mon</div>
-          <div class="temp-range3">60 / 76</div>
-          <img src="" class="weather-emoji3" />
-        </div>
-        <div class="day4">
-          <div class="day-name4">Mon</div>
-          <div class="temp-range4">60 / 76</div>
-          <img src="" class="weather-emoji4" />
-        </div>
-        <div class="day5">
-          <div class="day-name5">Mon</div>
-          <div class="temp-range5">60 / 76</div>
-          <img src="" class="weather-emoji5" />
-        </div>
-      </div>
-    </main>
-
+      </main>
+    </div>
     <script>
       //      catchDogImage().catch((error) => {
       //     console.log("error!");
@@ -140,26 +146,28 @@
         "Friday",
         "Saturday",
       ];
+
       let date = new Date();
       let todayName = days[date.getDay()];
 
-      console.log(days[date.getDay()]);
-
-      let nextFiveDays = [todayName];
-      const printNextFiveDays = () => {
-        while (nextFiveDays.length < 5) {
-          let currentDay = date.getDay(); //5
-          if (days[currentDay] || days[currentDay + 1]) {
-            nextFiveDays.push(days[date.getDay() + 1]);
-            currentDay++;
+      let currentWeek = [todayName]; // Friday
+      let currentIndex = date.getDay(); // 5
+      const generateWeekArray = () => {
+        while (currentWeek.length < 5) {
+          currentIndex;
+          if (days[currentIndex] && days[currentIndex + 1]) {
+            currentWeek.push(days[currentIndex + 1]);
+            currentIndex++;
           } else {
-            nextFiveDays.push(days[0]);
+            currentIndex = 0;
+            currentWeek.push(days[currentIndex]);
           }
         }
+        console.log(currentWeek); // Friday
+        console.log(currentIndex); // 5
       };
-      //printNextFiveDays();
-      console.log(nextFiveDays);
-      console.log(days[7]);
+
+      generateWeekArray();
 
       const button = document.querySelector("button");
       const input = document.querySelector(".input");
@@ -214,7 +222,8 @@
           ];
 
           for (i = 0; i < fiveDayWeather.length; i++) {
-            document.querySelector(`.day-name${i + 1}`).textContent = todayName;
+            document.querySelector(`.day-name${i + 1}`).textContent =
+              currentWeek[i];
             document.querySelector(
               `.temp-range${i + 1}`
             ).textContent = `${fiveDayWeather[i].min} / ${fiveDayWeather[i].max}`;
