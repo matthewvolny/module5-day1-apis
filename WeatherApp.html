@@ -131,6 +131,36 @@
 
       /////////////////
 
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      let date = new Date();
+      let todayName = days[date.getDay()];
+
+      console.log(days[date.getDay()]);
+
+      let nextFiveDays = [todayName];
+      const printNextFiveDays = () => {
+        while (nextFiveDays.length < 5) {
+          let currentDay = date.getDay(); //5
+          if (days[currentDay] || days[currentDay + 1]) {
+            nextFiveDays.push(days[date.getDay() + 1]);
+            currentDay++;
+          } else {
+            nextFiveDays.push(days[0]);
+          }
+        }
+      };
+      //printNextFiveDays();
+      console.log(nextFiveDays);
+      console.log(days[7]);
+
       const button = document.querySelector("button");
       const input = document.querySelector(".input");
       const currentTemp = document.querySelector(".current-temp");
@@ -147,7 +177,7 @@
       const day5 = document.querySelector(".day5");
       const dailyWeather = document.querySelector(".daily");
 
-      let array = [{}];
+      let daysOfTheWeek = [day1, day2, day3, day4, day5];
 
       async function getHourlyData(lat, lon) {
         const response = await fetch(
@@ -183,20 +213,15 @@
             },
           ];
 
-          for (i = 0; i < array.length; i++) {
-            let newElement = document.createElement("div");
-            newElement.textContent = `${fiveDayWeather[i].min} / ${fiveDayWeather[i].max}`;
-            let newImage = document.createElement("img");
-            newImage.src = `http://openweathermap.org/img/w/${fiveDayWeather[i].icon}.png`;
-            dailyWeather.append(newElement);
-            newElement.append(newImage);
+          for (i = 0; i < fiveDayWeather.length; i++) {
+            document.querySelector(`.day-name${i + 1}`).textContent = todayName;
+            document.querySelector(
+              `.temp-range${i + 1}`
+            ).textContent = `${fiveDayWeather[i].min} / ${fiveDayWeather[i].max}`;
+            document.querySelector(
+              `.weather-emoji${i + 1}`
+            ).src = `http://openweathermap.org/img/w/${fiveDayWeather[i].icon}.png`;
           }
-
-          console.log("second data set");
-          // let currentTempRaw = data.main.temp;
-          // currentTemp.innerHTML = `${currentTempRaw.toFixed(0)}°C`;
-          // currentWeatherDescription.innerHTML = data.weather[0].description;
-          // currentWeatherEmoji.src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
         });
       }
 
