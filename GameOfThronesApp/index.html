@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <button>Search</button>
+        <input type="text" class="input" />
+      </header>
+      <main>
+        <div class="posters"></div>
+      </main>
+    </div>
+
+    <script>
+      const button = document.querySelector("button");
+      const div = document.querySelector("text");
+      const input = document.querySelector(".input");
+      const posters = document.querySelector(".posters");
+      const images = document.querySelector(".images");
+
+      button.addEventListener("click", (event) => {
+        getHouseInfo();
+        async function getHouseInfo() {
+          const response = await fetch(
+            `http://www.omdbapi.com/?s=${input.value}&apikey=7af648f2`
+          );
+          const result = await response.json().then((data) => {
+            posters.innerHTML = "";
+            for (i = 0; i < data.Search.length; i++) {
+              posters.innerHTML += `<img src = ${data.Search[i].Poster} class="images"></img>`;
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
