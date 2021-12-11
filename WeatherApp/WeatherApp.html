@@ -5,12 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       :root {
         line-height: 1.2;
         font-size: 1rem;
         box-sizing: border-box;
+        font-family: "Comfortaa", cursive;
+        font-family: "Montserrat", sans-serif;
       }
 
       *,
@@ -25,11 +32,16 @@
       }
 
       body {
-        background-image: url(./weatherAppBackgroundDay.jpg);
+        background-image: url(./assets/weatherAppBackgroundDay.jpg);
         background-size: 100%;
         background-color: #cccccc;
       }
       .container {
+        border: black 1px solid;
+      }
+
+      .container > * {
+        /* margin-top: 6rem; */
       }
 
       .search {
@@ -37,13 +49,21 @@
         flex-direction: column;
         border: solid 1px rosybrown;
         margin-right: auto;
-        width: 40%;
+        margin-top: 0;
+        width: 45%;
         text-align: center;
-        padding: 1.2em;
+        padding: 2em;
       }
 
       .search > * {
         border: springgreen 1px solid;
+        margin-top: 1.7rem;
+        font-size: 1.8rem;
+      }
+
+      .search > div {
+        border: springgreen 1px solid;
+        margin-top: 0rem;
       }
 
       .current {
@@ -52,11 +72,16 @@
         text-align: center;
         border: rosybrown solid 1px;
         padding: 1.2em;
-        font-size: 2rem;
+        font-size: 3rem;
+        margin-top: 3rem;
       }
       .current > * {
         border: springgreen 1px solid;
-        /* margin: 0 auto; */
+        margin-top: 1.5rem;
+      }
+
+      .current-temp {
+        margin-top: 0rem;
       }
 
       .current-weather-emoji {
@@ -71,6 +96,8 @@
         padding: 1.2em;
         justify-content: space-between;
         text-align: center;
+        margin-top: 8rem;
+        font-size: 1.8rem;
       }
 
       .daily > * {
@@ -78,6 +105,7 @@
         flex-grow: 1;
         margin-top: 0em;
         /* padding: 1.2em; */
+        background-color: rgb(255, 145, 0, 0.5);
       }
       .daily > * > * {
         border: palevioletred 1px solid;
@@ -96,7 +124,7 @@
       </header>
       <main>
         <div class="current">
-          <div class="current-temp">76°C</div>
+          <div class="current-temp">76°F</div>
           <div class="current-weather-description">sunny</div>
           <img src="" class="current-weather-emoji" />
         </div>
@@ -226,7 +254,9 @@
               currentWeek[i];
             document.querySelector(
               `.temp-range${i + 1}`
-            ).textContent = `${fiveDayWeather[i].min} / ${fiveDayWeather[i].max}`;
+            ).textContent = `${fiveDayWeather[i].min.toFixed(
+              0
+            )} / ${fiveDayWeather[i].max.toFixed(0)}`;
             document.querySelector(
               `.weather-emoji${i + 1}`
             ).src = `http://openweathermap.org/img/w/${fiveDayWeather[i].icon}.png`;
@@ -243,7 +273,7 @@
           const result = await response.json().then((data) => {
             console.log(data);
             let currentTempRaw = data.main.temp;
-            currentTemp.innerHTML = `${currentTempRaw.toFixed(0)}°C`;
+            currentTemp.innerHTML = `${currentTempRaw.toFixed(0)}°F`;
             currentWeatherDescription.innerHTML = data.weather[0].description;
             currentWeatherEmoji.src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
             currentWeatherEmoji.style.width = "50px";
