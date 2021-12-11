@@ -158,13 +158,18 @@
       </main>
     </div>
     <script>
-      //      catchDogImage().catch((error) => {
-      //     console.log("error!");
-      //     console.error(error);
-      //   });
+      //DOM references
+      const button = document.querySelector("button");
+      const input = document.querySelector(".input");
+      const currentTemp = document.querySelector(".current-temp");
+      const currentWeatherDescription = document.querySelector(
+        ".current-weather-description"
+      );
+      const currentWeatherEmoji = document.querySelector(
+        ".current-weather-emoji"
+      );
 
-      /////////////////
-
+      //generates current five day week, called on page load
       const days = [
         "Sunday",
         "Monday",
@@ -178,8 +183,8 @@
       let date = new Date();
       let todayName = days[date.getDay()];
 
-      let currentWeek = [todayName]; // Friday
-      let currentIndex = date.getDay(); // 5
+      let currentWeek = [todayName]; //i.e. ['fri', 'sat', 'sun', 'mon', 'tues']
+      let currentIndex = date.getDay();
       const generateWeekArray = () => {
         while (currentWeek.length < 5) {
           currentIndex;
@@ -191,30 +196,13 @@
             currentWeek.push(days[currentIndex]);
           }
         }
-        console.log(currentWeek); // Friday
-        console.log(currentIndex); // 5
+        console.log(currentWeek);
+        console.log(currentIndex);
       };
 
       generateWeekArray();
 
-      const button = document.querySelector("button");
-      const input = document.querySelector(".input");
-      const currentTemp = document.querySelector(".current-temp");
-      const currentWeatherDescription = document.querySelector(
-        ".current-weather-description"
-      );
-      const currentWeatherEmoji = document.querySelector(
-        ".current-weather-emoji"
-      );
-      const day1 = document.querySelector(".day1");
-      const day2 = document.querySelector(".day2");
-      const day3 = document.querySelector(".day3");
-      const day4 = document.querySelector(".day4");
-      const day5 = document.querySelector(".day5");
-      const dailyWeather = document.querySelector(".daily");
-
-      let daysOfTheWeek = [day1, day2, day3, day4, day5];
-
+      //second fetch request, stores 5 day weather in an array and displays it
       async function getHourlyData(lat, lon) {
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&units=imperial&appid=7743de57ace60416f71d3cf3d8c0369a`
@@ -264,6 +252,7 @@
         });
       }
 
+      //fetches and displays daily weather, calls weekly weather fetch request
       button.addEventListener("click", (event) => {
         getWeatherData();
         async function getWeatherData() {
